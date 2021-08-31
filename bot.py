@@ -1,4 +1,5 @@
 import telebot
+from telebot.util import user_link
 import config
 import sqlite3
 from telegram import ParseMode
@@ -207,6 +208,15 @@ def answer(call):
     if call.data == "🇺🇿 O'zbekcha":
         bot.send_message(call.message.chat.id, "Kerakli bo'limni tanlang", reply_markup=btn.uzbMenu)
 
+    if call.data == "🇷🇺 Русский":
+        bot.send_message(call.message.chat.id, "Выберите нужный раздел", reply_markup=btn.rusMenu)
+
+    if call.data == "🇺🇸 Enlish":
+        bot.send_message(call.message.chat.id, "Выберите нужный раздел", reply_markup=btn.enMenu)
+
+    if call.data == "🇺🇿 Узбекча":
+        bot.send_message(call.message.chat.id, "Ўзингиз хоҳлаган бўлимни танланг", reply_markup=btn.uzbMenu_krill)
+
     if call.data == "buy_telegram":
         msg = bot.send_message(call.message.chat.id, "Qayerdansiz?", reply_markup=btn.location_uz_button)
         bot.register_next_step_handler(msg, process_city_step)
@@ -215,9 +225,13 @@ def answer(call):
         msg = bot.reply_to(call.message, "Ismingiz")
         bot.register_next_step_handler(msg, process_name_step)
 
+    if call.data == "buy_website":
+        bot.send_message(call.message.chat.id, url="google.com")
 
+back = ["◀ Ortga", "◀ Ортга", "◀ Назад", "◀ Back"]
 @bot.message_handler(content_types=["text"])
 def text(message):
+# 🇺🇿 O'zbekcha menulardagi buttonslar fungsiyalari
     if message.text == "🛒 Buyurtma berish":
         title = "<b>Sizning gilamizngiz 30 kv dan katta bo'lsa 10 % chegirma bor, \n Agar siz bizning doimiy mijozimiz bo'lsangiz 10 % chegirma bor</b>"
         xizmat_turi = "<i>Buyurtma berish uchun o'zingizga qulay usulni tanlang! 🤖 </i>"
@@ -240,10 +254,93 @@ def text(message):
 
     if message.text == "💵 Xizmat narhlarini bilish":
         title = "<b> Gilamingizni o'zingiz hisoblang kv.m chiqarishni usulari ko'rsatilgan! </b>"
-        xisoblash_info = "<i>Uzunligini eniga qo'shib 3 ga ko'paytiriladi</i>"
+        xisoblash_info = "<i>Kenglikni uzunlikka ko'paytiring</i>"
         caption = f"{title} \n\n {xisoblash_info} "
         bot.send_photo(message.from_user.id, config.xisoblash_id, caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_uz)
 
+    if message.text in back:
+        bot.send_message(message.chat.id, "😉", reply_markup=btn.language_btn_inline)
+
+# 🇷🇺 Русский  menulardagi buttonslar fungsiyalari
+    if message.text == "🛒 Заказ":
+        title = "<b>Скидка 10 %, если ваш ковер больше 30 кв.м, \n Для постоянных клиентов действует скидка 10 %</b>"
+        xizmat_turi = "<i>Выбирайте наиболее подходящий вам способ заказа! 🤖 </i>"
+        convert = "{:,}".format(price)
+        caption = f"{title} \n <b> Стоимость стирки ковров - 1 кв.м: </b> <i> {convert} Сум </i> \n\n {xizmat_turi}"
+        bot.send_photo(message.from_user.id, config.gilam_yuvish_id, caption, parse_mode=ParseMode.HTML, reply_markup=btn.purchase_ru)
+    
+    if message.text == "📙 О нас":
+        title = "<b> Краткая информация о компании по мойке ковров </b>"
+        website = "<a href='https://www.yangwoow.uz'>Открыть</a>"
+        telegram_bot = "<a href='https://t.me/yang_woow_bot'>Увидеть бота</a>"
+        telegram_channel = "<a href='https://t.me/yang_woow'>Присоединяйтесь к нам</a>"
+        telegram_grupp = "<a href='https://t.me/joinchat/pVCTtnZpvaU1MTY6'>Присоединяйтесь к нашей группе</a>"
+        call_number = "<a href='tel:+998955150999'>(+998) 955150999</a>"
+        operator_1 = "<a href='tel:+998971130999'>(+998) 971130999</a>"
+        operator_2 = "<a href='tel:+998971180999'>(+998) 971180999</a>"
+        xizmat_turi = "<i>Наша компания - компания №1 в Янгиюле. Мы рады предоставить вам качественный сервис. Мы рады внести свой вклад в благополучие каждой семьи.😉 </i>"
+        caption = f"❗️{title}❗️  \n\n {xizmat_turi} \n\n 🌏 <b>Веб-сайт:</b> {website} \n\n 🤖 <b>Telegram бот:</b> {telegram_bot} \n\n 🚀 <b>Telegram канал:</b> {telegram_channel} \n\n 🚀 <b>Telegram группа:</b> {telegram_grupp} \n\n ☎️ <b>Колл-центр:</b> {call_number} \n\n 📞 <b>Оператор:</b> {operator_1} \n\n 📞 <b>Оператор:</b> {operator_2}"
+        bot.send_photo(message.from_user.id, config.logo_id, caption, parse_mode=ParseMode.HTML, reply_markup=btn.rusMenu)
+
+    if message.text == "💵 Знайте стоимость услуги":
+        title = "<b> Рассчитайте свой ковер самостоятельно Как сделать квадратный метр показано! </b>"
+        xisoblash_info = "<i>Умножьте ширину на длину</i>"
+        caption = f"{title} \n\n {xisoblash_info} "
+        bot.send_photo(message.from_user.id, config.xisoblash_id, caption, parse_mode=ParseMode.HTML, reply_markup=btn.language_btn)
+
+# 🇺🇸 Enlish  menulardagi buttonslar fungsiyalari
+    if message.text == "🛒 Order":
+        title = "<b>10 % discount if your carpet is more than 30 sq.m., \n For regular customers there is a 10 % discount</b>"
+        xizmat_turi = "<i>Choose the most suitable ordering method for you! 🤖 </i>"
+        convert = "{:,}".format(price)
+        caption = f"{title} \n <b> The cost of washing carpets - 1 sq. M: </b> <i> {convert} Soum </i> \n\n {xizmat_turi}"
+        bot.send_photo(message.from_user.id, config.gilam_yuvish_id, caption, parse_mode=types.ParseMode.HTML, reply_markup=btn.purchase_en)
+
+    if message.text == "📙 About Us":
+        title = "<b> Brief information about the carpet washing company </b>"
+        website = "<a href='https://www.yangwoow.uz'>Open</a>"
+        telegram_bot = "<a href='https://t.me/yang_woow_bot'>See the bot</a>"
+        telegram_channel = "<a href='https://t.me/yang_woow'>Join us</a>"
+        telegram_grupp = "<a href='https://t.me/joinchat/pVCTtnZpvaU1MTY6'>Join our group</a>"
+        call_number = "<a href='tel:+998955150999'>(+998) 955150999</a>"
+        operator_1 = "<a href='tel:+998971130999'>(+998) 971130999</a>"
+        operator_2 = "<a href='tel:+998971180999'>(+998) 971180999</a>"
+        xizmat_turi = "<i>Our company is the number 1 company in Yangiyul. We are pleased to provide you with a quality service. We are happy to contribute to the well-being of every family.😉</i>"
+        caption = f"❗️{title}❗️  \n\n {xizmat_turi} \n\n 🌏 <b>Веб-сайт:</b> {website} \n\n 🤖 <b>Telegram бот:</b> {telegram_bot} \n\n 🚀 <b>Telegram канал:</b> {telegram_channel} \n\n 🚀 <b>Telegram группа:</b> {telegram_grupp} \n\n ☎️ <b>Колл-центр:</b> {call_number} \n\n 📞 <b>Оператор:</b> {operator_1} \n\n 📞 <b>Оператор:</b> {operator_2}"
+        bot.send_photo(message.from_user.id, config.logo_id, caption, parse_mode=types.ParseMode.HTML, reply_markup=btn.english)
+
+    if message.text == "💵 Service charge":
+        title = "<b> Calculate Your Rug Yourself How To Make The Square Meter Shown! </b>"
+        xisoblash_info = "<i>Multiply width by length</i>"
+        caption = f"{title} \n\n {xisoblash_info} "
+        bot.send_photo(message.from_user.id, config.xisoblash_id, caption, parse_mode=types.ParseMode.HTML, reply_markup=btn.language_btn)
+
+# 🇺🇿 Узбекча  menulardagi buttonslar fungsiyalari
+    if message.text == "🛒 Буюртма бериш":
+        title = "<b>Сизнинг гиламизнгиз 30 кв дан катта бўлса 10 % чегирма бор, \n Агар сиз бизнинг доимий мижозимиз бўлсангиз 10 % чегирма бор</b>"
+        xizmat_turi = "<i>Буюртма бериш учун ўзингизга қулай усулни танланг! 🤖 </i>"
+        convert = "{:,}".format(price)
+        caption = f"{title} \n <b> Гилам ювиш нархи 1 кв.м: </b> <i> {convert} Сўм </i> \n\n {xizmat_turi}"
+        bot.send_photo(message.from_user.id, config.gilam_yuvish_id, caption, parse_mode=ParseMode.HTML, reply_markup=btn.purchase_uz_krill)
+
+    if message.text == "📙 Биз ҳақимизда":
+        title = "<b> Гилам ювиш фирмаси ҳақида қисқача маълумот </b>"
+        website = "<a href='https://www.yangwoow.uz'>Кириш</a>"
+        telegram_bot = "<a href='https://t.me/yang_woow_bot'>Бўтни кўриш</a>"
+        telegram_channel = "<a href='https://t.me/yang_woow'>Бизга қўшилинг</a>"
+        telegram_grupp = "<a href='https://t.me/joinchat/pVCTtnZpvaU1MTY6'>Гуруҳимизга қўшилинг</a>"
+        call_number = "<a href='tel:+998955150999'>(+998) 955150999</a>"
+        operator_1 = "<a href='tel:+998971130999'>(+998) 971130999</a>"
+        operator_2 = "<a href='tel:+998971180999'>(+998) 971180999</a>"
+        xizmat_turi = "<i>Бизнинг фирма Янгиёълдаги №1 фирма бўлиб. Сиз азизларга сфатли ҳизмат кўрсатишдан мамнунмиз. Ҳар бир оиладаги шинамликда бизнин ҳиссамиз борлигидан ҳурсандмиз 😉 </i>"
+        caption = f"❗️{title}❗️  \n\n {xizmat_turi} \n\n 🌏 <b>Веб -сайт:</b> {website} \n\n 🤖 <b>Телеграм бот:</b> {telegram_bot} \n\n 🚀 <b>Телеграм канал:</b> {telegram_channel} \n\n 🚀 <b>Телеграм группа:</b> {telegram_grupp} \n\n ☎️ <b>Cолл-марказ:</b> {call_number} \n\n 📞 <b>Оператор:</b> {operator_1} \n\n 📞 <b>Оператор:</b> {operator_2}"
+        bot.send_photo(message.from_user.id, config.logo_id, caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_uz)
+
+    if message.text == "💵 Хизмат нарҳларини билиш":
+        title = "<b> Гиламингизни ўзингиз ҳисобланг кв.м чиқаришни усулари кўрсатилган! </b>"
+        xisoblash_info = "<i>Кенгликни узунликка кўпайтиринг</i>"
+        caption = f"{title} \n\n {xisoblash_info} "
+        bot.send_photo(message.from_user.id, config.xisoblash_id, caption, parse_mode=ParseMode.HTML, reply_markup=btn.uzbMenu_krill)
 
 
 bot.enable_save_next_step_handlers(delay=2)

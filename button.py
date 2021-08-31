@@ -12,22 +12,20 @@ language_btn_inline.add(iteam1, iteam2, iteam3, iteam4)
 
 
 
-
-
-# Tilni tanlaganda chqadigan buttonlar
-uzbekcha = KeyboardButton("🇺🇿 O'zbekcha")
-russion = KeyboardButton("🇷🇺 Русский")
-english = KeyboardButton("🇺🇸 English")
-language_btn = ReplyKeyboardMarkup( resize_keyboard=True, row_width=3, one_time_keyboard=True).add(uzbekcha, russion, english)
-# end block
-
-
 # O'zbekcha bo'limidagi menular uchun buttonlar
 menu1 = KeyboardButton("🛒 Buyurtma berish")
 menu2 = KeyboardButton("📙 Biz haqimizda")
 menu3 = KeyboardButton("💵 Xizmat narhlarini bilish")
 menu4 = KeyboardButton("◀ Ortga")
 uzbMenu = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2, one_time_keyboard=True).add(menu1, menu2, menu3, menu4)
+# endblock
+
+# Krilcha bo'limidagi menular uchun buttonlar
+menu1 = KeyboardButton("🛒 Буюртма бериш")
+menu2 = KeyboardButton("📙 Биз ҳақимизда")
+menu3 = KeyboardButton("💵 Хизмат нарҳларини билиш")
+menu4 = KeyboardButton("◀ Ортга")
+uzbMenu_krill = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2, one_time_keyboard=True).add(menu1, menu2, menu3, menu4)
 # endblock
 
 
@@ -65,7 +63,6 @@ regular_customer_uz.add(itembtn1, itembtn2)
 
 
 
-
 # O'zbekcha Buyurtma berish uchun va website ga olib otadigan buttons
 purchase_uz = InlineKeyboardMarkup(row_width=2)
 order1 = InlineKeyboardButton(text="🛒 Telegram orqali 🚀 ",  callback_data="buy_telegram")
@@ -92,11 +89,20 @@ order4 = InlineKeyboardButton(text="📬 Leave a comment 🚀 ",  url="google.co
 purchase_en.add(order1, order2, order3, order4)
 
 
+# Krilcha  Buyurtma berish uchun va website ga olib otadigan buttons
+purchase_uz_krill = InlineKeyboardMarkup(row_width=2)
+order1 = InlineKeyboardButton(text="🛒 Телеграм орқали 🚀 ",  callback_data="buy_telegram")
+order2 = InlineKeyboardButton(text="🌏 Wеб-сайт орқали 🚀 ", url="google.com", callback_data="buy_website")
+order3 = InlineKeyboardButton(text="📟 Хисоблаш 🚀 ",   callback_data="calculator")
+order4 = InlineKeyboardButton(text="📬 Изох қолдириш 🚀 ",  url="google.com", callback_data="comment")
+purchase_uz_krill.add(order1, order2, order3, order4)
+
+
 
 
 # O'zbekcha Biz haqimizda bosilganida chiqadigan buttonslar
 about_uz = InlineKeyboardMarkup(row_width=2)
-order1 = InlineKeyboardButton(text="🌏 Website 🚀", url="https://www.yangwoow.uz", callback_data="website")
+order1 = InlineKeyboardButton(text="🌏 Veb-sayt 🚀", url="https://www.yangwoow.uz", callback_data="website")
 order2 = InlineKeyboardButton(text="✅ Telegram gruppa 🚀 ", url="https://t.me/joinchat/pVCTtnZpvaU1MTY6",  callback_data="telegram_gruppa")
 order3 = InlineKeyboardButton(text="☎️ Coll-center 🚀 ",  callback_data="call_center")
 order4 = InlineKeyboardButton(text="✅ Telegram kanal 🚀 ",url="https://t.me/yang_woow" , callback_data="telegram_kanal")
@@ -104,3 +110,32 @@ order5 = InlineKeyboardButton(text="🛒 Buyurtma berish 🚀 ",  callback_data=
 order6 = InlineKeyboardButton(text="✅ Telegram bot 🚀 ", url="https://t.me/yang_woow_bot", callback_data="telegram_bot")
 about_uz.add(order1, order2, order3, order4, order5, order6)
 
+# Ruschada Biz haqimizda bosilganida chiqadigan buttonslar
+about_ru = InlineKeyboardMarkup(row_width=2)
+order1 = InlineKeyboardButton(text="🌏 Веб-сайт 🚀", url="https://www.yangwoow.uz", callback_data="website")
+order2 = InlineKeyboardButton(text="✅ Telegram группа 🚀 ", url="https://t.me/joinchat/pVCTtnZpvaU1MTY6",  callback_data="telegram_gruppa")
+order3 = InlineKeyboardButton(text="☎️ Колл-центр 🚀 ",  callback_data="call_center")
+order4 = InlineKeyboardButton(text="✅ Telegram канал 🚀 ",url="https://t.me/yang_woow" , callback_data="telegram_kanal")
+order5 = InlineKeyboardButton(text="🛒 Заказ 🚀 ",  callback_data="buy_telegram")
+order6 = InlineKeyboardButton(text="✅ Telegram бот 🚀 ", url="https://t.me/yang_woow_bot", callback_data="telegram_bot")
+about_ru.add(order1, order2, order3, order4, order5, order6)
+
+# English Biz haqimizda bosilganida chiqadigan buttonslar
+about_ru = InlineKeyboardMarkup(row_width=2)
+order1 = InlineKeyboardButton(text="🌏 Web site 🚀", url="https://www.yangwoow.uz", callback_data="website")
+order2 = InlineKeyboardButton(text="✅ Telegram group 🚀 ", url="https://t.me/joinchat/pVCTtnZpvaU1MTY6",  callback_data="telegram_gruppa")
+order3 = InlineKeyboardButton(text="☎️ Call center 🚀 ",  callback_data="call_center")
+order4 = InlineKeyboardButton(text="✅ Telegram channel 🚀 ",url="https://t.me/yang_woow" , callback_data="telegram_kanal")
+order5 = InlineKeyboardButton(text="🛒 Order 🚀 ",  callback_data="buy_telegram")
+order6 = InlineKeyboardButton(text="✅ Telegram bot 🚀 ", url="https://t.me/yang_woow_bot", callback_data="telegram_bot")
+about_ru.add(order1, order2, order3, order4, order5, order6)
+
+# Krilcha Biz haqimizda bosilganida chiqadigan buttonslar
+about_uz = InlineKeyboardMarkup(row_width=2)
+order1 = InlineKeyboardButton(text="🌏 Веб-сайт 🚀", url="https://www.yangwoow.uz", callback_data="website")
+order2 = InlineKeyboardButton(text="✅ Телеграм группа 🚀 ", url="https://t.me/joinchat/pVCTtnZpvaU1MTY6",  callback_data="telegram_gruppa")
+order3 = InlineKeyboardButton(text="☎️ Cолл-cентер 🚀 ",  callback_data="call_center")
+order4 = InlineKeyboardButton(text="✅ Телеграм канал 🚀 ",url="https://t.me/yang_woow" , callback_data="telegram_kanal")
+order5 = InlineKeyboardButton(text="🛒 Буюртма бериш 🚀 ",  callback_data="buy_telegram")
+order6 = InlineKeyboardButton(text="✅ Телеграм бот  🚀 ", url="https://t.me/yang_woow_bot", callback_data="telegram_bot")
+about_uz.add(order1, order2, order3, order4, order5, order6)
