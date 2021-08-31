@@ -1,5 +1,4 @@
 import telebot
-from telebot.util import user_link
 import config
 import sqlite3
 from telegram import ParseMode
@@ -40,7 +39,7 @@ def send_welcome(message: types.Message):
     data = cursor.fetchone()
     if data is None:
         user_id = [message.from_user.first_name, message.from_user.last_name, message.from_user.username, message.from_user.language_code, message.chat.id, message.date, message.text]
-        cursor.execute("INSERT INTO frontend_user_info(first_name, last_name, username, language_code, chat_id, message_date, user_text) VALUES(?, ?, ?, ?, ?, ?, ?)", user_id)
+        cursor.execute("INSERT INTO frontend_user_info(first_name, last_name, username, language_code, chat_id,   message_date, user_text) VALUES(?, ?, ?, ?, ?, ?, ?)", user_id)
         connect.commit()
         bot.send_message(message.from_user.id, f" <b>{message.from_user.full_name}</b> <i>Siz bizning bazamizga qo'shildingiz</i> ", parse_mode=ParseMode.HTML)
     else:
@@ -122,6 +121,7 @@ def process_thank_step(message):
             user.regular_customer = message.text
             bot.send_photo(chat_id, photo=config.logo_id, caption=getRegData(user, "🤖 Sizning buyurtmangiz: ", message.from_user.first_name), parse_mode="Markdown",reply_markup=btn.about_uz )
             bot.send_photo(config.chat_id, photo=config.logo_id,  caption=getRegData(user, '🤖 Buyurtma botdan: ', bot.get_me().username), parse_mode="Markdown")
+            bot.send_photo(config.gruppa_id, photo=config.logo_id,  caption=getRegData(user, '🤖 Buyurtma botdan: ', bot.get_me().username), parse_mode="Markdown")
         else:
             msg = bot.send_message(chat_id, "Iltmos quyidagi javoblardan birini tanlang")
             bot.register_next_step_handler(msg, process_thank_step)
@@ -146,6 +146,24 @@ def getRegData(user, title, name):
 def send_welcome(message):
     msg = bot.reply_to(message, "👤 Ismingiz")
     bot.register_next_step_handler(msg, process_name_step)
+
+@bot.message_handler(commands=["help"])
+def send_welcome(message):
+    caption = "<b>Biz bilan bog'lanish uchun</b>"
+    bot.send_photo(message.chat.id, photo=config.hellp_image_id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_uz)
+
+
+@bot.message_handler(commands=["contact"])
+def send_welcome(message):
+    caption = "Qanday yordam bera olaman ?"
+    bot.send_photo(message.chat.id, photo=config.gilam_yuvish_id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_uz)
+
+@bot.message_handler(commands=["about"])
+def send_welcome(message):
+    
+    caption = "<b>Biz haqimizda ko'proq biling kuzating do'stlaringizga ulshing \n\n 👨‍✈️ Bot ishlashi  uchun ➕ FOLLOW QILIB admin berishiz kerak ✅</b>"
+    bot.send_photo(message.chat.id, photo=config.folow_image_id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=btn.follow_btn)
+
 
 def process_name_step(message):
     try:
@@ -286,7 +304,7 @@ def text(message):
         title = "<b> Рассчитайте свой ковер самостоятельно Как сделать квадратный метр показано! </b>"
         xisoblash_info = "<i>Умножьте ширину на длину</i>"
         caption = f"{title} \n\n {xisoblash_info} "
-        bot.send_photo(message.from_user.id, config.xisoblash_id, caption, parse_mode=ParseMode.HTML, reply_markup=btn.language_btn)
+        bot.send_photo(message.from_user.id, config.xisoblash_id, caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_ru)
 
 # 🇺🇸 Enlish  menulardagi buttonslar fungsiyalari
     if message.text == "🛒 Order":
@@ -294,7 +312,7 @@ def text(message):
         xizmat_turi = "<i>Choose the most suitable ordering method for you! 🤖 </i>"
         convert = "{:,}".format(price)
         caption = f"{title} \n <b> The cost of washing carpets - 1 sq. M: </b> <i> {convert} Soum </i> \n\n {xizmat_turi}"
-        bot.send_photo(message.from_user.id, config.gilam_yuvish_id, caption, parse_mode=types.ParseMode.HTML, reply_markup=btn.purchase_en)
+        bot.send_photo(message.from_user.id, config.gilam_yuvish_id, caption, parse_mode=ParseMode.HTML, reply_markup=btn.purchase_en)
 
     if message.text == "📙 About Us":
         title = "<b> Brief information about the carpet washing company </b>"
@@ -307,13 +325,13 @@ def text(message):
         operator_2 = "<a href='tel:+998971180999'>(+998) 971180999</a>"
         xizmat_turi = "<i>Our company is the number 1 company in Yangiyul. We are pleased to provide you with a quality service. We are happy to contribute to the well-being of every family.😉</i>"
         caption = f"❗️{title}❗️  \n\n {xizmat_turi} \n\n 🌏 <b>Веб-сайт:</b> {website} \n\n 🤖 <b>Telegram бот:</b> {telegram_bot} \n\n 🚀 <b>Telegram канал:</b> {telegram_channel} \n\n 🚀 <b>Telegram группа:</b> {telegram_grupp} \n\n ☎️ <b>Колл-центр:</b> {call_number} \n\n 📞 <b>Оператор:</b> {operator_1} \n\n 📞 <b>Оператор:</b> {operator_2}"
-        bot.send_photo(message.from_user.id, config.logo_id, caption, parse_mode=types.ParseMode.HTML, reply_markup=btn.english)
+        bot.send_photo(message.from_user.id, config.logo_id, caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_en)
 
     if message.text == "💵 Service charge":
         title = "<b> Calculate Your Rug Yourself How To Make The Square Meter Shown! </b>"
         xisoblash_info = "<i>Multiply width by length</i>"
         caption = f"{title} \n\n {xisoblash_info} "
-        bot.send_photo(message.from_user.id, config.xisoblash_id, caption, parse_mode=types.ParseMode.HTML, reply_markup=btn.language_btn)
+        bot.send_photo(message.from_user.id, config.xisoblash_id, caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_en)
 
 # 🇺🇿 Узбекча  menulardagi buttonslar fungsiyalari
     if message.text == "🛒 Буюртма бериш":
@@ -334,13 +352,13 @@ def text(message):
         operator_2 = "<a href='tel:+998971180999'>(+998) 971180999</a>"
         xizmat_turi = "<i>Бизнинг фирма Янгиёълдаги №1 фирма бўлиб. Сиз азизларга сфатли ҳизмат кўрсатишдан мамнунмиз. Ҳар бир оиладаги шинамликда бизнин ҳиссамиз борлигидан ҳурсандмиз 😉 </i>"
         caption = f"❗️{title}❗️  \n\n {xizmat_turi} \n\n 🌏 <b>Веб -сайт:</b> {website} \n\n 🤖 <b>Телеграм бот:</b> {telegram_bot} \n\n 🚀 <b>Телеграм канал:</b> {telegram_channel} \n\n 🚀 <b>Телеграм группа:</b> {telegram_grupp} \n\n ☎️ <b>Cолл-марказ:</b> {call_number} \n\n 📞 <b>Оператор:</b> {operator_1} \n\n 📞 <b>Оператор:</b> {operator_2}"
-        bot.send_photo(message.from_user.id, config.logo_id, caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_uz)
+        bot.send_photo(message.from_user.id, config.logo_id, caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_uz_kril)
 
     if message.text == "💵 Хизмат нарҳларини билиш":
         title = "<b> Гиламингизни ўзингиз ҳисобланг кв.м чиқаришни усулари кўрсатилган! </b>"
         xisoblash_info = "<i>Кенгликни узунликка кўпайтиринг</i>"
         caption = f"{title} \n\n {xisoblash_info} "
-        bot.send_photo(message.from_user.id, config.xisoblash_id, caption, parse_mode=ParseMode.HTML, reply_markup=btn.uzbMenu_krill)
+        bot.send_photo(message.from_user.id, config.xisoblash_id, caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_uz_kril)
 
 
 bot.enable_save_next_step_handlers(delay=2)

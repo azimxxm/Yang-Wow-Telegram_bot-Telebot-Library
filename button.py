@@ -121,21 +121,27 @@ order6 = InlineKeyboardButton(text="✅ Telegram бот 🚀 ", url="https://t.m
 about_ru.add(order1, order2, order3, order4, order5, order6)
 
 # English Biz haqimizda bosilganida chiqadigan buttonslar
-about_ru = InlineKeyboardMarkup(row_width=2)
+about_en = InlineKeyboardMarkup(row_width=2)
 order1 = InlineKeyboardButton(text="🌏 Web site 🚀", url="https://www.yangwoow.uz", callback_data="website")
 order2 = InlineKeyboardButton(text="✅ Telegram group 🚀 ", url="https://t.me/joinchat/pVCTtnZpvaU1MTY6",  callback_data="telegram_gruppa")
 order3 = InlineKeyboardButton(text="☎️ Call center 🚀 ",  callback_data="call_center")
 order4 = InlineKeyboardButton(text="✅ Telegram channel 🚀 ",url="https://t.me/yang_woow" , callback_data="telegram_kanal")
 order5 = InlineKeyboardButton(text="🛒 Order 🚀 ",  callback_data="buy_telegram")
 order6 = InlineKeyboardButton(text="✅ Telegram bot 🚀 ", url="https://t.me/yang_woow_bot", callback_data="telegram_bot")
-about_ru.add(order1, order2, order3, order4, order5, order6)
+about_en.add(order1, order2, order3, order4, order5, order6)
 
 # Krilcha Biz haqimizda bosilganida chiqadigan buttonslar
-about_uz = InlineKeyboardMarkup(row_width=2)
+about_uz_kril = InlineKeyboardMarkup(row_width=2)
 order1 = InlineKeyboardButton(text="🌏 Веб-сайт 🚀", url="https://www.yangwoow.uz", callback_data="website")
 order2 = InlineKeyboardButton(text="✅ Телеграм группа 🚀 ", url="https://t.me/joinchat/pVCTtnZpvaU1MTY6",  callback_data="telegram_gruppa")
 order3 = InlineKeyboardButton(text="☎️ Cолл-cентер 🚀 ",  callback_data="call_center")
 order4 = InlineKeyboardButton(text="✅ Телеграм канал 🚀 ",url="https://t.me/yang_woow" , callback_data="telegram_kanal")
 order5 = InlineKeyboardButton(text="🛒 Буюртма бериш 🚀 ",  callback_data="buy_telegram")
 order6 = InlineKeyboardButton(text="✅ Телеграм бот  🚀 ", url="https://t.me/yang_woow_bot", callback_data="telegram_bot")
-about_uz.add(order1, order2, order3, order4, order5, order6)
+about_uz_kril.add(order1, order2, order3, order4, order5, order6)
+
+
+# Follow Boshqlarga yuborish guruhlarga qo'shish
+follow_btn = InlineKeyboardMarkup(row_width=1)
+folow = InlineKeyboardButton(text="➕ Follow ➕", url="http://t.me/yang_woow_bot?startgroup=new", callback_data="follow")
+follow_btn.add(folow)
