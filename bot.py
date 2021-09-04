@@ -142,28 +142,12 @@ def getRegData(user, title, name):
         'regular_customer': user.regular_customer,
     })
 
-@bot.message_handler(commands=["calculator"])
+
+# Calculator_o'zbeckhada
+@bot.message_handler(commands=["calculator_uz"])
 def send_welcome(message):
     msg = bot.reply_to(message, "👤 Ismingiz")
     bot.register_next_step_handler(msg, process_name_step)
-
-@bot.message_handler(commands=["help"])
-def send_welcome(message):
-    caption = "<b>Biz bilan bog'lanish uchun</b>"
-    bot.send_photo(message.chat.id, photo=config.hellp_image_id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_uz)
-
-
-@bot.message_handler(commands=["contact"])
-def send_welcome(message):
-    caption = "Qanday yordam bera olaman ?"
-    bot.send_photo(message.chat.id, photo=config.gilam_yuvish_id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_uz)
-
-@bot.message_handler(commands=["about"])
-def send_welcome(message):
-    
-    caption = "<b>Biz haqimizda ko'proq biling kuzating do'stlaringizga ulshing \n\n 👨‍✈️ Bot ishlashi  uchun ➕ FOLLOW QILIB admin berishiz kerak ✅</b>"
-    bot.send_photo(message.chat.id, photo=config.folow_image_id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=btn.follow_btn)
-
 
 def process_name_step(message):
     try:
@@ -219,7 +203,216 @@ def process_javob_step(message):
         caption = f"🤖 Sizning gilamingiz: <b>{javob} kv.m </b> \n\n <i>💵 Narxi: </i> <b>{onvert} so'm</b>"
         bot.send_photo(chat_id, photo=config.yang_woo_image_id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_uz)
     except Exception as e:
-        bot.reply_to(message, 'oooops')
+        bot.reply_to(message, '🤖 Xatolik yuz berdi!!!')
+
+
+# Calculator_Ruschada
+@bot.message_handler(commands=["calculator_ru"])
+def send_welcome_ru(message):
+    msg = bot.reply_to(message, "👤 Ваше имя")
+    bot.register_next_step_handler(msg, process_name_step_ru)
+
+def process_name_step_ru(message):
+    try:
+        chat_id = message.chat.id
+        name = message.text
+        user = Users(name)
+        size_dict[chat_id] = user
+        msg = bot.reply_to(message, '🧮 Длина ковра')
+        bot.register_next_step_handler(msg, process_uzunligi_step_ru)
+    except Exception as e:
+        bot.reply_to(message, '🤖 Произошла ошибка')
+
+def process_uzunligi_step_ru(message):
+    try:
+        int(message.text)
+        chat_id = message.chat.id
+        lengh = message.text
+        user = size_dict[chat_id]
+        user.lengh = lengh
+        msg = bot.reply_to(message, "🧮 Введите ширину ковра")
+        bot.register_next_step_handler(msg, process_kengligi_step_ru)
+    except Exception as e:
+        msg = bot.reply_to(message, '🤖 Введите число еще раз, указав длину коврика, например: 6.')
+        bot.register_next_step_handler(msg, process_uzunligi_step_ru)
+
+def process_kengligi_step_ru(message):
+    try:
+        int(message.text)
+        chat_id = message.chat.id
+        latitude = message.text
+        user = size_dict[chat_id]
+        user.latitude = latitude
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        markup.add("Да", "Нет")
+        msg = bot.reply_to(message, "🤖 Хотите увидеть результат?", reply_markup=markup)
+        bot.register_next_step_handler(msg, process_javob_step_ru)
+    except Exception as e:
+        msg = bot.reply_to(message, "🤖 Введите число еще раз ширину ковра, например: 6")
+        bot.register_next_step_handler(msg, process_kengligi_step_ru)
+
+def process_javob_step_ru(message):
+    try:
+        chat_id = message.chat.id
+        sex = message.text
+        user = size_dict[chat_id]
+        if (sex == u"Да") or (sex == u"Нет"):
+            user.sex = sex
+        else:
+            raise Exception("Несуществующий ответ")
+        javob = int(user.lengh) * int(user.latitude)
+        narxi = javob * price
+        onvert = "{:,}".format(narxi)
+        caption = f"🤖 Ваш ковер: <b>{javob} кв.м </b> \n\n <i>💵 Цена: </i> <b>{onvert} сум</b>"
+        bot.send_photo(chat_id, photo=config.yang_woo_image_ru_id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_ru)
+    except Exception as e:
+        bot.reply_to(message, '🤖 Произошла ошибка')
+
+
+# Calculator_English
+@bot.message_handler(commands=["calculator_en"])
+def send_welcome_en(message):
+    msg = bot.reply_to(message, "👤 Your name")
+    bot.register_next_step_handler(msg, process_name_step_en)
+
+def process_name_step_en(message):
+    try:
+        chat_id = message.chat.id
+        name = message.text
+        user = Users(name)
+        size_dict[chat_id] = user
+        msg = bot.reply_to(message, '🧮 Carpet length')
+        bot.register_next_step_handler(msg, process_uzunligi_step_en)
+    except Exception as e:
+        bot.reply_to(message, '🤖 An error has occurred')
+
+def process_uzunligi_step_en(message):
+    try:
+        int(message.text)
+        chat_id = message.chat.id
+        lengh = message.text
+        user = size_dict[chat_id]
+        user.lengh = lengh
+        msg = bot.reply_to(message, "🧮 Enter the width of the carpet")
+        bot.register_next_step_handler(msg, process_kengligi_step_en)
+    except Exception as e:
+        msg = bot.reply_to(message, '🤖 Re-enter the number using the length of the rug, for example: 6.')
+        bot.register_next_step_handler(msg, process_uzunligi_step_en)
+
+def process_kengligi_step_en(message):
+    try:
+        int(message.text)
+        chat_id = message.chat.id
+        latitude = message.text
+        user = size_dict[chat_id]
+        user.latitude = latitude
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        markup.add("Yes", "No")
+        msg = bot.reply_to(message, "🤖 Want to see the result?", reply_markup=markup)
+        bot.register_next_step_handler(msg, process_javob_step_en)
+    except Exception as e:
+        msg = bot.reply_to(message, "🤖 Enter the number again the width of the carpet, for example: 6")
+        bot.register_next_step_handler(msg, process_kengligi_step_en)
+
+def process_javob_step_en(message):
+    try:
+        chat_id = message.chat.id
+        sex = message.text
+        user = size_dict[chat_id]
+        if (sex == u"Yes") or (sex == u"No"):
+            user.sex = sex
+        else:
+            raise Exception("Non-existent answer")
+        javob = int(user.lengh) * int(user.latitude)
+        narxi = javob * price
+        onvert = "{:,}".format(narxi)
+        caption = f"🤖 Your carpet: <b>{javob} sq.m </b> \n\n <i>💵 Price: </i> <b>{onvert} sum</b>"
+        bot.send_photo(chat_id, photo=config.yang_woo_image_en_id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_en)
+    except Exception as e:
+        bot.reply_to(message, '🤖 An error has occurred')
+
+
+# Calculator_O'zbeckha kirilcha
+@bot.message_handler(commands=["calculator_uz_krill"])
+def send_welcome_uz_krill(message):
+    msg = bot.reply_to(message, "👤 Исмингиз ?")
+    bot.register_next_step_handler(msg, process_name_step_uz_krill)
+
+def process_name_step_uz_krill(message):
+    try:
+        chat_id = message.chat.id
+        name = message.text
+        user = Users(name)
+        size_dict[chat_id] = user
+        msg = bot.reply_to(message, '🧮 Гилам узунлиги')
+        bot.register_next_step_handler(msg, process_uzunligi_step_uz_krill)
+    except Exception as e:
+        bot.reply_to(message, '🤖 Хатолик юз берди')
+
+def process_uzunligi_step_uz_krill(message):
+    try:
+        int(message.text)
+        chat_id = message.chat.id
+        lengh = message.text
+        user = size_dict[chat_id]
+        user.lengh = lengh
+        msg = bot.reply_to(message, "🧮 Гиламнинг кенглигини киритинг")
+        bot.register_next_step_handler(msg, process_kengligi_step_uz_krill)
+    except Exception as e:
+        msg = bot.reply_to(message, '🤖 Гилам узунлигидан фойдаланиб, рақамни қайта киритинг, масалан: 6.')
+        bot.register_next_step_handler(msg, process_uzunligi_step_uz_krill)
+
+def process_kengligi_step_uz_krill(message):
+    try:
+        int(message.text)
+        chat_id = message.chat.id
+        latitude = message.text
+        user = size_dict[chat_id]
+        user.latitude = latitude
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        markup.add("Ҳа", "Йўқ")
+        msg = bot.reply_to(message, "🤖 Натижани кўришни хоҳлайсизми?", reply_markup=markup)
+        bot.register_next_step_handler(msg, process_javob_step_uz_krill)
+    except Exception as e:
+        msg = bot.reply_to(message, "🤖 Гилам кенглигидаги рақамни яна киритинг, масалан: 6")
+        bot.register_next_step_handler(msg, process_kengligi_step_uz_krill)
+
+def process_javob_step_uz_krill(message):
+    try:
+        chat_id = message.chat.id
+        sex = message.text
+        user = size_dict[chat_id]
+        if (sex == u"Ҳа") or (sex == u"Йўқ"):
+            user.sex = sex
+        else:
+            raise Exception("Сиз берилган жавоблардан бирини киритинг")
+        javob = int(user.lengh) * int(user.latitude)
+        narxi = javob * price
+        onvert = "{:,}".format(narxi)
+        caption = f"🤖 Сизнинг гиламингиз: <b>{javob} кв.m </b> \n\n <i>💵 Нарх: </i> <b>{onvert} сўм</b>"
+        bot.send_photo(chat_id, photo=config.yang_woo_image_uz_krill_id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_uz_kril)
+    except Exception as e:
+        bot.reply_to(message, '🤖 Хатолик юз берди')
+
+
+
+@bot.message_handler(commands=["help"])
+def send_welcome(message):
+    caption = "<b>Biz bilan bog'lanish uchun</b>"
+    bot.send_photo(message.chat.id, photo=config.hellp_image_id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_uz)
+
+
+@bot.message_handler(commands=["contact"])
+def send_welcome(message):
+    caption = "Qanday yordam bera olaman ?"
+    bot.send_photo(message.chat.id, photo=config.gilam_yuvish_id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=btn.about_uz)
+
+@bot.message_handler(commands=["about"])
+def send_welcome(message):
+    caption = "<b>Biz haqimizda ko'proq biling kuzating do'stlaringizga ulshing \n\n 👨‍✈️ Bot ishlashi  uchun ➕ FOLLOW QILIB admin berishiz kerak ✅</b>"
+    bot.send_photo(message.chat.id, photo=config.folow_image_id, caption=caption, parse_mode=ParseMode.HTML, reply_markup=btn.follow_btn)
+
+
 
 @bot.callback_query_handler(func=lambda call:True)
 def answer(call):
@@ -239,12 +432,26 @@ def answer(call):
         msg = bot.send_message(call.message.chat.id, "Qayerdansiz?", reply_markup=btn.location_uz_button)
         bot.register_next_step_handler(msg, process_city_step)
 
-    if call.data == "calculator":
+    if call.data == "calculator_uz":
         msg = bot.reply_to(call.message, "Ismingiz")
         bot.register_next_step_handler(msg, process_name_step)
 
+    if call.data == "calculator_ru":
+        msg = bot.reply_to(call.message, "Ваше имя")
+        bot.register_next_step_handler(msg, process_name_step_ru)
+
+    if call.data == "calculator_en":
+        msg = bot.reply_to(call.message, "Your name")
+        bot.register_next_step_handler(msg, process_name_step_en)
+
+    if call.data == "calculator_uz_krill":
+        msg = bot.reply_to(call.message, "Исмингиз ?")
+        bot.register_next_step_handler(msg, process_name_step_uz_krill)
+
     if call.data == "buy_website":
         bot.send_message(call.message.chat.id, url="google.com")
+
+
 
 back = ["◀ Ortga", "◀ Ортга", "◀ Назад", "◀ Back"]
 @bot.message_handler(content_types=["text"])
