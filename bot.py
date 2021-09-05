@@ -58,47 +58,47 @@ def delete(message: types.Message):
     connect.commit()
     bot.send_message(message.from_user.id, "Siz bazamizdan o'chirildingiz..")
 
-@bot.message_handler(commands=["reg"])
-def user_reg(message):
+@bot.message_handler(commands=["reg_uz"])
+def user_reg_uz(message):
     msg = bot.send_message(message.chat.id, "📌 Qayerdansiz?", reply_markup=btn.location_uz_button)
-    bot.register_next_step_handler(msg, process_city_step)
+    bot.register_next_step_handler(msg, process_city_step_uz)
 
-def process_city_step(message):
+def process_city_step_uz(message):
     try:
         chat_id = message.chat.id
         user_dict[chat_id] = User(message.text)
         markup = types.ReplyKeyboardRemove(selective=False)
         msg = bot.send_message(chat_id, "👤 Ismingiz", reply_markup=markup)
-        bot.register_next_step_handler(msg, process_first_name_step)
+        bot.register_next_step_handler(msg, process_first_name_step_uz)
 
     except Exception as e:
-        bot.reply_to(message, 'ooops!!')
+        bot.reply_to(message, '🤖 Xatolik yuz berdi')
 
-def process_first_name_step(message):
+def process_first_name_step_uz(message):
     try:
         chat_id = message.chat.id
         user = user_dict[chat_id]
         user.first_name = message.text
 
         msg = bot.send_message(chat_id,  "👤 Familiyangiz")
-        bot.register_next_step_handler(msg, process_last_name_step)
+        bot.register_next_step_handler(msg, process_last_name_step_uz)
 
     except Exception as e:
-        bot.reply_to(message, 'ooops!!')
+        bot.reply_to(message, '🤖 xatolik yuz berdi')
 
-def process_last_name_step(message):
+def process_last_name_step_uz(message):
     try:
         chat_id = message.chat.id
         user = user_dict[chat_id]
         user.last_name = message.text
 
         msg = bot.send_message(chat_id, "📞 Telefon raqamingiz (+998)")
-        bot.register_next_step_handler(msg, process_phone_step)
+        bot.register_next_step_handler(msg, process_phone_step_uz)
 
     except Exception as e:
-        bot.reply_to(message, 'ooops!!')
+        bot.reply_to(message, '🤖 xatolik yuz berdi')
 
-def process_phone_step(message):
+def process_phone_step_uz(message):
     try:
         int(message.text)
 
@@ -107,29 +107,29 @@ def process_phone_step(message):
         user.phone = message.text
 
         msg = bot.send_message(chat_id, "Bizni hizmatimizdan avval ham foydalanganmisiz?", reply_markup=btn.regular_customer_uz)
-        bot.register_next_step_handler(msg, process_thank_step)
+        bot.register_next_step_handler(msg, process_thank_step_uz)
 
     except Exception as e:
         msg = bot.reply_to(message, "Iltimos telefon raqamingizni to'g'ri kiriting")
-        bot.register_next_step_handler(msg, process_phone_step)
+        bot.register_next_step_handler(msg, process_phone_step_uz)
 
-def process_thank_step(message):
+def process_thank_step_uz(message):
     try:
         chat_id = message.chat.id
         if message.text == "Xa" or message.text == "Yo'q":
             user = user_dict[chat_id]
             user.regular_customer = message.text
-            bot.send_photo(chat_id, photo=config.logo_id, caption=getRegData(user, "🤖 Sizning buyurtmangiz: ", message.from_user.first_name), parse_mode="Markdown",reply_markup=btn.about_uz )
-            bot.send_photo(config.chat_id, photo=config.logo_id,  caption=getRegData(user, '🤖 Buyurtma botdan: ', bot.get_me().username), parse_mode="Markdown")
-            bot.send_photo(config.gruppa_id, photo=config.logo_id,  caption=getRegData(user, '🤖 Buyurtma botdan: ', bot.get_me().username), parse_mode="Markdown")
+            bot.send_photo(chat_id, photo=config.logo_id, caption=getRegData_uz(user, "🤖 Sizning buyurtmangiz: ", message.from_user.first_name), parse_mode="Markdown",reply_markup=btn.about_uz )
+            bot.send_photo(config.chat_id, photo=config.logo_id,  caption=getRegData_uz(user, '🤖 Buyurtma botdan: ', bot.get_me().username), parse_mode="Markdown")
+            bot.send_photo(config.gruppa_id, photo=config.logo_id,  caption=getRegData_uz(user, '🤖 Buyurtma botdan: ', bot.get_me().username), parse_mode="Markdown")
         else:
             msg = bot.send_message(chat_id, "Iltmos quyidagi javoblardan birini tanlang")
-            bot.register_next_step_handler(msg, process_thank_step)
+            bot.register_next_step_handler(msg, process_thank_step_uz)
     except Exception as e:
         msg = bot.send_message(chat_id, "Iltmos quyidagi javoblardan birini tanlang")
-        bot.register_next_step_handler(msg, process_thank_step)
+        bot.register_next_step_handler(msg, process_thank_step_uz)
 
-def getRegData(user, title, name):
+def getRegData_uz(user, title, name):
     t = Template("$title *$name* \n\n📌 Manzil: *$userCity* \n\n👤 Ism: *$first_name* \n\n👤 Familiya: *$last_name* \n\n📞 Telefon: *$phone*  \n\n✅  Doimiy mijoz: *$regular_customer* ")
 
     return t.substitute({
@@ -141,6 +141,265 @@ def getRegData(user, title, name):
         'phone': user.phone,
         'regular_customer': user.regular_customer,
     })
+
+# Registratsiya ruschada 
+@bot.message_handler(commands=["reg_ru"])
+def user_reg_ru(message):
+    msg = bot.send_message(message.chat.id, "📌 Вы откуда ?", reply_markup=btn.location_uz_button)
+    bot.register_next_step_handler(msg, process_city_step_ru)
+
+def process_city_step_ru(message):
+    try:
+        chat_id = message.chat.id
+        user_dict[chat_id] = User(message.text)
+        markup = types.ReplyKeyboardRemove(selective=False)
+        msg = bot.send_message(chat_id, "👤 Ваше имя", reply_markup=markup)
+        bot.register_next_step_handler(msg, process_first_name_step_ru)
+
+    except Exception as e:
+        bot.reply_to(message, '🤖 Произошла ошибка')
+
+def process_first_name_step_ru(message):
+    try:
+        chat_id = message.chat.id
+        user = user_dict[chat_id]
+        user.first_name = message.text
+
+        msg = bot.send_message(chat_id,  "👤 Ваша фамилия")
+        bot.register_next_step_handler(msg, process_last_name_step_ru)
+
+    except Exception as e:
+        bot.reply_to(message, '🤖 Произошла ошибка')
+
+def process_last_name_step_ru(message):
+    try:
+        chat_id = message.chat.id
+        user = user_dict[chat_id]
+        user.last_name = message.text
+
+        msg = bot.send_message(chat_id, "📞 Ваш номер телефона (+998)")
+        bot.register_next_step_handler(msg, process_phone_step_ru)
+
+    except Exception as e:
+        bot.reply_to(message, '🤖 Произошла ошибка')
+
+def process_phone_step_ru(message):
+    try:
+        int(message.text)
+
+        chat_id = message.chat.id
+        user = user_dict[chat_id]
+        user.phone = message.text
+
+        msg = bot.send_message(chat_id, "Вы раньше пользовались нашим сервисом?", reply_markup=btn.regular_customer_ru)
+        bot.register_next_step_handler(msg, process_thank_step_ru)
+
+    except Exception as e:
+        msg = bot.reply_to(message, "Пожалуйста, введите свой номер телефона правильно")
+        bot.register_next_step_handler(msg, process_phone_step_ru)
+
+def process_thank_step_ru(message):
+    try:
+        chat_id = message.chat.id
+        if message.text == "Да" or message.text == "Нет":
+            user = user_dict[chat_id]
+            user.regular_customer = message.text
+            bot.send_photo(chat_id, photo=config.logo_id, caption=getRegData(user, "🤖 Твои заказ: ", message.from_user.first_name), parse_mode="Markdown",reply_markup=btn.about_ru )
+            bot.send_photo(config.chat_id, photo=config.logo_id,  caption=getRegData(user, '🤖 Заказ от бота: ', bot.get_me().username), parse_mode="Markdown")
+            bot.send_photo(config.gruppa_id, photo=config.logo_id,  caption=getRegData(user, '🤖 Заказ от бота: ', bot.get_me().username), parse_mode="Markdown")
+        else:
+            msg = bot.send_message(chat_id, "Пожалуйста, выберите один из следующих ответов")
+            bot.register_next_step_handler(msg, process_thank_step_ru)
+    except Exception as e:
+        msg = bot.send_message(chat_id, "Пожалуйста, выберите один из следующих ответов")
+        bot.register_next_step_handler(msg, process_thank_step_ru)
+
+def getRegData(user, title, name):
+    t = Template("$title *$name* \n\n📌 Адрес: *$userCity* \n\n👤 Имя: *$first_name* \n\n👤 Фамилия: *$last_name* \n\n📞 Телефон: *$phone*  \n\n✅  Постоянный клиент: *$regular_customer* ")
+
+    return t.substitute({
+        'title': title,
+        'name': name,
+        'userCity': user.city,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'phone': user.phone,
+        'regular_customer': user.regular_customer,
+    })
+
+# Registratsiya english
+@bot.message_handler(commands=["reg_en"])
+def user_reg_en(message):
+    msg = bot.send_message(message.chat.id, "📌 Where are you from ?", reply_markup=btn.location_uz_button)
+    bot.register_next_step_handler(msg, process_city_step_en)
+
+def process_city_step_en(message):
+    try:
+        chat_id = message.chat.id
+        user_dict[chat_id] = User(message.text)
+        markup = types.ReplyKeyboardRemove(selective=False)
+        msg = bot.send_message(chat_id, "👤 Your name", reply_markup=markup)
+        bot.register_next_step_handler(msg, process_first_name_step_en)
+
+    except Exception as e:
+        bot.reply_to(message, '🤖 An error has occurred')
+
+def process_first_name_step_en(message):
+    try:
+        chat_id = message.chat.id
+        user = user_dict[chat_id]
+        user.first_name = message.text
+
+        msg = bot.send_message(chat_id,  "👤 Your surname")
+        bot.register_next_step_handler(msg, process_last_name_step_en)
+
+    except Exception as e:
+        bot.reply_to(message, '🤖 An error has occurred')
+
+def process_last_name_step_en(message):
+    try:
+        chat_id = message.chat.id
+        user = user_dict[chat_id]
+        user.last_name = message.text
+
+        msg = bot.send_message(chat_id, "📞 Your phone number (+998)")
+        bot.register_next_step_handler(msg, process_phone_step_en)
+
+    except Exception as e:
+        bot.reply_to(message, '🤖 An error has occurred')
+
+def process_phone_step_en(message):
+    try:
+        int(message.text)
+
+        chat_id = message.chat.id
+        user = user_dict[chat_id]
+        user.phone = message.text
+
+        msg = bot.send_message(chat_id, "Have you used our service before?", reply_markup=btn.regular_customer_en)
+        bot.register_next_step_handler(msg, process_thank_step_en)
+
+    except Exception as e:
+        msg = bot.reply_to(message, "Please enter your phone number correctly")
+        bot.register_next_step_handler(msg, process_phone_step_en)
+
+def process_thank_step_en(message):
+    try:
+        chat_id = message.chat.id
+        if message.text == "Yes" or message.text == "No":
+            user = user_dict[chat_id]
+            user.regular_customer = message.text
+            bot.send_photo(chat_id, photo=config.logo_id, caption=getRegData(user, "🤖 Your order: ", message.from_user.first_name), parse_mode="Markdown",reply_markup=btn.about_en )
+            bot.send_photo(config.chat_id, photo=config.logo_id,  caption=getRegData(user, '🤖 Bot order: ', bot.get_me().username), parse_mode="Markdown")
+            bot.send_photo(config.gruppa_id, photo=config.logo_id,  caption=getRegData(user, '🤖 Bot order: ', bot.get_me().username), parse_mode="Markdown")
+        else:
+            msg = bot.send_message(chat_id, "Please choose one of the following answers")
+            bot.register_next_step_handler(msg, process_thank_step_en)
+    except Exception as e:
+        msg = bot.send_message(chat_id, "Please choose one of the following answers")
+        bot.register_next_step_handler(msg, process_thank_step_en)
+
+def getRegData(user, title, name):
+    t = Template("$title *$name* \n\n📌 Address: *$userCity* \n\n👤 Name: *$first_name* \n\n👤 Surname: *$last_name* \n\n📞 Telephone: *$phone*  \n\n✅  Regular customer: *$regular_customer* ")
+
+    return t.substitute({
+        'title': title,
+        'name': name,
+        'userCity': user.city,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'phone': user.phone,
+        'regular_customer': user.regular_customer,
+    })
+
+
+# Registratsiya Uzbekcha Krill
+@bot.message_handler(commands=["reg_uz_krill"])
+def user_reg_uz_krill(message):
+    msg = bot.send_message(message.chat.id, "📌 Қаердансиз?", reply_markup=btn.location__uz_krill_button)
+    bot.register_next_step_handler(msg, process_city_step_uz_krill)
+
+def process_city_step_uz_krill(message):
+    try:
+        chat_id = message.chat.id
+        user_dict[chat_id] = User(message.text)
+        markup = types.ReplyKeyboardRemove(selective=False)
+        msg = bot.send_message(chat_id, "👤 Исмингиз", reply_markup=markup)
+        bot.register_next_step_handler(msg, process_first_name_step_uz_krill)
+
+    except Exception as e:
+        bot.reply_to(message, '🤖 Хатолик юз берди')
+
+def process_first_name_step_uz_krill(message):
+    try:
+        chat_id = message.chat.id
+        user = user_dict[chat_id]
+        user.first_name = message.text
+
+        msg = bot.send_message(chat_id,  "👤 Фамилиянгиз")
+        bot.register_next_step_handler(msg, process_last_name_step_uz_krill)
+
+    except Exception as e:
+        bot.reply_to(message, '🤖 Хатолик юз берди')
+
+def process_last_name_step_uz_krill(message):
+    try:
+        chat_id = message.chat.id
+        user = user_dict[chat_id]
+        user.last_name = message.text
+
+        msg = bot.send_message(chat_id, "📞 Телефон рақамингиз (+998)")
+        bot.register_next_step_handler(msg, process_phone_step_uz_krill)
+
+    except Exception as e:
+        bot.reply_to(message, '🤖 Хатолик юз берди')
+
+def process_phone_step_uz_krill(message):
+    try:
+        int(message.text)
+
+        chat_id = message.chat.id
+        user = user_dict[chat_id]
+        user.phone = message.text
+
+        msg = bot.send_message(chat_id, "Бизни ҳизматимиздан аввал ҳам фойдаланганмисиз?", reply_markup=btn.regular_customer_uz_krill)
+        bot.register_next_step_handler(msg, process_thank_step_uz_krill)
+
+    except Exception as e:
+        msg = bot.reply_to(message, "Илтимос телефон рақамингизни тўғри киритинг")
+        bot.register_next_step_handler(msg, process_phone_step_uz_krill)
+
+def process_thank_step_uz_krill(message):
+    try:
+        chat_id = message.chat.id
+        if message.text == "Ҳа" or message.text == "Йўқ":
+            user = user_dict[chat_id]
+            user.regular_customer = message.text
+            bot.send_photo(chat_id, photo=config.logo_id, caption=getRegData(user, "🤖 Сизнинг буюртмангиз: ", message.from_user.first_name), parse_mode="Markdown",reply_markup=btn.about_uz_kril )
+            bot.send_photo(config.chat_id, photo=config.logo_id,  caption=getRegData(user, '🤖 Буюртма ботдан: ', bot.get_me().username), parse_mode="Markdown")
+            bot.send_photo(config.gruppa_id, photo=config.logo_id,  caption=getRegData(user, '🤖 Буюртма ботдан: ', bot.get_me().username), parse_mode="Markdown")
+        else:
+            msg = bot.send_message(chat_id, "Илтимос, қуйидаги жавоблардан бирини танланг")
+            bot.register_next_step_handler(msg, process_thank_step_uz_krill)
+    except Exception as e:
+        msg = bot.send_message(chat_id, "Илтимос, қуйидаги жавоблардан бирини танланг")
+        bot.register_next_step_handler(msg, process_thank_step_uz_krill)
+
+def getRegData(user, title, name):
+    t = Template("$title *$name* \n\n📌 Манзил: *$userCity* \n\n👤 Исм: *$first_name* \n\n👤 Фамилия: *$last_name* \n\n📞 Телефон: *$phone*  \n\n✅  Доимий мижоз: *$regular_customer* ")
+
+    return t.substitute({
+        'title': title,
+        'name': name,
+        'userCity': user.city,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'phone': user.phone,
+        'regular_customer': user.regular_customer,
+    })
+
+
+
 
 
 # Calculator_o'zbeckhada
@@ -158,7 +417,7 @@ def process_name_step(message):
         msg = bot.reply_to(message, '🧮 Gilam uzunligi')
         bot.register_next_step_handler(msg, process_uzunligi_step)
     except Exception as e:
-        bot.reply_to(message, '🤖 oooops')
+        bot.reply_to(message, '🤖 xatolik yuz berdi')
 
 def process_uzunligi_step(message):
     try:
@@ -428,9 +687,22 @@ def answer(call):
     if call.data == "🇺🇿 Узбекча":
         bot.send_message(call.message.chat.id, "Ўзингиз хоҳлаган бўлимни танланг", reply_markup=btn.uzbMenu_krill)
 
-    if call.data == "buy_telegram":
+    if call.data == "buy_telegram_uz":
         msg = bot.send_message(call.message.chat.id, "Qayerdansiz?", reply_markup=btn.location_uz_button)
-        bot.register_next_step_handler(msg, process_city_step)
+        bot.register_next_step_handler(msg, process_city_step_uz)
+
+    if call.data == "buy_telegram_ru":
+        msg = bot.send_message(call.message.chat.id, "Вы откуда ?", reply_markup=btn.location_ru_button)
+        bot.register_next_step_handler(msg, process_city_step_ru)
+
+    if call.data == "buy_telegram_en":
+        msg = bot.send_message(call.message.chat.id, "Where are you from ?", reply_markup=btn.location_en_button)
+        bot.register_next_step_handler(msg, process_city_step_en)
+
+
+    if call.data == "buy_telegram_uz_krill":
+        msg = bot.send_message(call.message.chat.id, "Where are you from ?", reply_markup=btn.location__uz_krill_button)
+        bot.register_next_step_handler(msg, process_city_step_uz_krill)
 
     if call.data == "calculator_uz":
         msg = bot.reply_to(call.message, "Ismingiz")

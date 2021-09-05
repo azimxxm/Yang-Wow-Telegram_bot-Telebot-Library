@@ -55,11 +55,41 @@ itembtn4 = KeyboardButton("Paxta")
 location_uz_button.add(itembtn1, itembtn2, itembtn3, itembtn4)
 # end block 
 
+# Registratsiya uzbekchada buttons 
+location_ru_button = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+itembtn1 = KeyboardButton("город Янгиюль")
+itembtn2 = KeyboardButton("Янгиюльский район")
+itembtn3 = KeyboardButton("Чиноз")
+itembtn4 = KeyboardButton("Пахта")
+location_ru_button.add(itembtn1, itembtn2, itembtn3, itembtn4)
+# end block 
+
+# Registratsiya English buttons 
+location_en_button = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+itembtn1 = KeyboardButton("Yangiyul city")
+itembtn2 = KeyboardButton("Yangiyul district")
+itembtn3 = KeyboardButton("Chinoz")
+itembtn4 = KeyboardButton("Paxta")
+location_en_button.add(itembtn1, itembtn2, itembtn3, itembtn4)
+# end block 
+
+# Registratsiya Uzbek_krill buttons 
+location__uz_krill_button = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+itembtn1 = KeyboardButton("Янгийўл шаҳар")
+itembtn2 = KeyboardButton("Янгийўл туман")
+itembtn3 = KeyboardButton("Чиноз")
+itembtn4 = KeyboardButton("Пахта")
+location__uz_krill_button.add(itembtn1, itembtn2, itembtn3, itembtn4)
+# end block 
+
+
+
 # Xizmatdan foydalangalik haqida so'rov uchun buttons
 regular_customer_uz = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
 itembtn1 = KeyboardButton("Xa")
 itembtn2 = KeyboardButton("Yo'q")
 regular_customer_uz.add(itembtn1, itembtn2)
+# endblock 
 
 
 # Xizmatdan foydalangalik haqida so'rov uchun buttons ruschadaa
@@ -67,12 +97,27 @@ regular_customer_ru = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboar
 itembtn1 = KeyboardButton("Да")
 itembtn2 = KeyboardButton("Нет")
 regular_customer_ru.add(itembtn1, itembtn2)
+# endblock 
 
+
+# Xizmatdan foydalangalik haqida so'rov uchun buttons ruschadaa
+regular_customer_en = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+itembtn1 = KeyboardButton("Yes")
+itembtn2 = KeyboardButton("No")
+regular_customer_en.add(itembtn1, itembtn2)
+# endblock 
+
+# Xizmatdan foydalangalik haqida so'rov uchun buttons Krilll
+regular_customer_uz_krill = ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+itembtn1 = KeyboardButton("Ҳа")
+itembtn2 = KeyboardButton("Йўқ")
+regular_customer_uz_krill.add(itembtn1, itembtn2)
+# endblock 
 
 
 # O'zbekcha Buyurtma berish uchun va website ga olib otadigan buttons
 purchase_uz = InlineKeyboardMarkup(row_width=2)
-order1 = InlineKeyboardButton(text="🛒 Telegram orqali 🚀 ",  callback_data="buy_telegram")
+order1 = InlineKeyboardButton(text="🛒 Telegram orqali 🚀 ",  callback_data="buy_telegram_uz")
 order2 = InlineKeyboardButton(text="🌏 Website orqali 🚀 ", url="google.com", callback_data="buy_website")
 order3 = InlineKeyboardButton(text="📟 Xisoblash 🚀 ",   callback_data="calculator_uz")
 order4 = InlineKeyboardButton(text="📬 Izox qoldirish 🚀 ",  url="google.com", callback_data="comment")
@@ -81,7 +126,7 @@ purchase_uz.add(order1, order2, order3, order4)
 
 # Ruscha Buyurtma berish uchun va website ga olib otadigan buttons 
 purchase_ru = InlineKeyboardMarkup(row_width=2)
-order1 = InlineKeyboardButton(text="🛒 Телеграммой🚀 ", callback_data="buy_telegram")
+order1 = InlineKeyboardButton(text="🛒 Телеграммой🚀 ", callback_data="buy_telegram_ru")
 order2 = InlineKeyboardButton(text="🌏 Через сайт 🚀 ", url="google.com", callback_data="buy_website")
 order3 = InlineKeyboardButton(text="📟 Расчет 🚀 ",   callback_data="calculator_ru")
 order4 = InlineKeyboardButton(text="📬 Оставить коментарий 🚀 ",  url="google.com", callback_data="comment")
@@ -89,7 +134,7 @@ purchase_ru.add(order1, order2, order3, order4)
 
 # English  Buyurtma berish uchun va website ga olib otadigan buttons
 purchase_en = InlineKeyboardMarkup(row_width=2)
-order1 = InlineKeyboardButton(text="🛒 By telegram 🚀 ",  callback_data="buy_telegram")
+order1 = InlineKeyboardButton(text="🛒 By telegram 🚀 ",  callback_data="buy_telegram_en")
 order2 = InlineKeyboardButton(text="🌏 Through the site 🚀 ", url="google.com", callback_data="buy_website")
 order3 = InlineKeyboardButton(text="📟 Calculation 🚀 ",   callback_data="calculator_en")
 order4 = InlineKeyboardButton(text="📬 Leave a comment 🚀 ",  url="google.com", callback_data="comment")
@@ -98,7 +143,7 @@ purchase_en.add(order1, order2, order3, order4)
 
 # Krilcha  Buyurtma berish uchun va website ga olib otadigan buttons
 purchase_uz_krill = InlineKeyboardMarkup(row_width=2)
-order1 = InlineKeyboardButton(text="🛒 Телеграм орқали 🚀 ",  callback_data="buy_telegram")
+order1 = InlineKeyboardButton(text="🛒 Телеграм орқали 🚀 ",  callback_data="buy_telegram_uz_krill")
 order2 = InlineKeyboardButton(text="🌏 Wеб-сайт орқали 🚀 ", url="google.com", callback_data="buy_website")
 order3 = InlineKeyboardButton(text="📟 Хисоблаш 🚀 ",   callback_data="calculator_uz_krill")
 order4 = InlineKeyboardButton(text="📬 Изох қолдириш 🚀 ",  url="google.com", callback_data="comment")
